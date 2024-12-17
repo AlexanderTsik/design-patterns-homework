@@ -2,8 +2,6 @@ package ge.tbc.testautomation.steps;
 
 
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.ElementsCollection;
-import org.testng.asserts.SoftAssert;
 import ge.tbc.testautomation.pages.TextBoxPage;
 
 
@@ -16,15 +14,15 @@ public class TextBoxSteps {
 
     public TextBoxSteps fillAndSubmitForm(String fullName, String email, String currentAddress, String permanentAddress) {
         open(TEXTBOX_URL); // Navigate to the page
+        // Fill the Forum
+        textBoxPage.fullNameField.setValue(fullName);
+        textBoxPage.emailField.setValue(email);
+        textBoxPage.currentAddressField.setValue(currentAddress);
+        textBoxPage.permanentAddressField.setValue(permanentAddress);
 
-        textBoxPage.fullNameField.setValue(fullName); // Fill the Full Name field
-        textBoxPage.emailField.setValue(email);       // Fill the Email field
-        textBoxPage.currentAddressField.setValue(currentAddress); // Fill the Current Address field
-        textBoxPage.permanentAddressField.setValue(permanentAddress); // Fill the Permanent Address field
+        textBoxPage.submitButton.click();
 
-        textBoxPage.submitButton.click(); // Submit the form
-
-        return this; // Return for Fluent Interface
+        return this;
     }
 
     public TextBoxSteps validateOutput(String fullName, String email, String currentAddress, String permanentAddress) {

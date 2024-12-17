@@ -6,6 +6,8 @@ import com.codeborne.selenide.SelenideElement;
 import ge.tbc.testautomation.pages.PricingPage;
 import ge.tbc.testautomation.utils.TableHandler;
 
+import java.util.List;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import static ge.tbc.testautomation.data.Constants.*;

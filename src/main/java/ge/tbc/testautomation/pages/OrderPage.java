@@ -68,7 +68,4 @@ public class OrderPage {
     public SelenideElement totalPrice = $(".e2e-total-price");
     public SelenideElement continueButton = $(".btn.btn-primary.e2e-continue");
 
-    public SelenideElement discount25Row = $(".u-mb10:nth-child(1)"); // 2-5 Licenses
-    public SelenideElement discount610Row = $(".u-mb10:nth-child(2)");
-
 }

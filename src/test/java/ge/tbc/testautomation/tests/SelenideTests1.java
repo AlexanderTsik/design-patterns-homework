@@ -15,9 +15,7 @@ public class SelenideTests1 extends BaseTest {
     private final PricingSteps pricingSteps = new PricingSteps();
     private final PricingPage pricingPage = new PricingPage();
     private final CheckBoxSteps checkBoxSteps = new CheckBoxSteps();
-    private final CheckBoxPage checkBoxPage = new CheckBoxPage();
     private final DropDownSteps dropDownSteps = new DropDownSteps();
-    private final DropDownPage dropDownPage = new DropDownPage();
     private final TextBoxSteps textBoxSteps = new TextBoxSteps();
 
     @Test(groups="Selenide 1")
@@ -26,39 +24,32 @@ public class SelenideTests1 extends BaseTest {
 
                 // 1. 'Mocking solution for rapid unit testing' feature is not included in DevCraft UI.
                 .validateNotIncluded(pricingPage.devCraftUIBundlePricingInfo,MOCKING_SOLUTION)
-
                 // 2. 'Issue escalation' is supported only in DevCraft Ultimate.
                 .validateIncluded(pricingPage.devCraftUltimateBundlePricingSupport,ISSUE_ESCALATION)
                 .validateNotIncluded(pricingPage.devCraftUIBundlePricingSupport,ISSUE_ESCALATION)
                 .validateNotIncluded(pricingPage.devCraftCompleteBundlePricingSupport,ISSUE_ESCALATION)
-
                 // 3. 'End-to-end report management solution' is supported only in DevCraft Ultimate.
                 .validateIncluded(pricingPage.devCraftUltimateBundlePricingInfo,REPORT_MANAGEMENT_SOLUTION)
                 .validateNotIncluded(pricingPage.devCraftUIBundlePricingInfo,REPORT_MANAGEMENT_SOLUTION)
                 .validateNotIncluded(pricingPage.devCraftCompleteBundlePricingInfo,REPORT_MANAGEMENT_SOLUTION)
-
                 // 4. 'Telerik Test Studio Dev Edition' is supported only in DevCraft Ultimate.
-                .validateFeatureNotIncluded(TESLERIK_TEST, 1)
-                .validateFeatureNotIncluded(TESLERIK_TEST, 2)
-                .validateFeatureIncluded(TESLERIK_TEST, 3)
-
+                .validateFeatureNotIncluded(TESLERIK_TEST, DEVCRAFT_UI_COLUMN)
+                .validateFeatureNotIncluded(TESLERIK_TEST, DEVCRAFT_COMPLETE_COLUMN)
+                .validateFeatureIncluded(TESLERIK_TEST, DEVCRAFT_ULTIMATE_COLUMN)
                 // 5. 'Kendo UI for jQuery' is supported on all offers.
-                .validateFeatureIncluded(JQUERY, 1)
-                .validateFeatureIncluded(JQUERY, 2)
-                .validateFeatureIncluded(JQUERY, 3)
-
+                .validateFeatureIncluded(JQUERY, DEVCRAFT_UI_COLUMN)
+                .validateFeatureIncluded(JQUERY, DEVCRAFT_COMPLETE_COLUMN)
+                .validateFeatureIncluded(JQUERY, DEVCRAFT_ULTIMATE_COLUMN)
                 // 6. DevCraft Ultimate supports 1 instance of 'Telerik Report Server' with 15 users.
-                .validateCellText("Telerik Report Server", 3, "1 instance with 15 users")
-
+                .validateCellText(REPORT_SERVER, DEVCRAFT_ULTIMATE_COLUMN, REPORT_SERVER_INSTANCES)
                 // 7. 'Telerik Reporting' is supported by only DevCraft Complete and DevCraft Ultimate.
-                .validateFeatureNotIncluded("Telerik Reporting", 1)
-                .validateFeatureIncluded("Telerik Reporting", 2)
-                .validateFeatureIncluded("Telerik Reporting", 3)
-
+                .validateFeatureNotIncluded(REPORTING, DEVCRAFT_UI_COLUMN)
+                .validateFeatureIncluded(REPORTING, DEVCRAFT_COMPLETE_COLUMN)
+                .validateFeatureIncluded(REPORTING, DEVCRAFT_ULTIMATE_COLUMN)
                 // 8. 'Access to on-demand videos' is supported by all offers.
-                .validateFeatureIncluded("Access to on-demand videos", 1)
-                .validateFeatureIncluded("Access to on-demand videos", 2)
-                .validateFeatureIncluded("Access to on-demand videos", 3);
+                .validateFeatureIncluded(ON_DEMAND_VIDEOS, DEVCRAFT_UI_COLUMN)
+                .validateFeatureIncluded(ON_DEMAND_VIDEOS, DEVCRAFT_COMPLETE_COLUMN)
+                .validateFeatureIncluded(ON_DEMAND_VIDEOS, DEVCRAFT_ULTIMATE_COLUMN);
     }
 
     @Test (groups="Selenide 1")
@@ -75,9 +66,9 @@ public class SelenideTests1 extends BaseTest {
                 //2) Both offers have Priority Support selected by default.
                 .validateDropdownOptions()
                 //  3) The price of Priority Support is $999 on KendoReact.
-                .validatePricing(pricingPage.kendoReactPrice,999)
+                .validatePricing(pricingPage.kendoReactPrice,KENDO_REACT_PRICE)
                 //	4) The price of Priority Support is $1149 on Kendo UI.
-                .validatePricing(pricingPage.kendoUIPrice,1149);
+                .validatePricing(pricingPage.kendoUIPrice,KENDO_UI_PRICE);
     }
 
     @Test(groups = {"dropDown-FrontEnd"})
@@ -89,7 +80,7 @@ public class SelenideTests1 extends BaseTest {
     @Test(groups = {"dropDown-FrontEnd"})
     public void dropDownTest() {
         dropDownSteps.openDropDownPage()
-                .validateDropdownSelection("Option 2");
+                .validateDropdownSelection(DROPDOWN_OPTION);
     }
 
     @Test(groups="Selenide 1")

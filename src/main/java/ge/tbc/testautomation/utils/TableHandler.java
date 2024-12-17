@@ -24,13 +24,5 @@ public class TableHandler {
     public SelenideElement getCellInRow(SelenideElement row, int columnIndex) {
         return getCellsInRow(row).get(columnIndex);
     }
-
-    public boolean doesCellContainDot(SelenideElement cell) {
-        return cell.$("span.dot").exists();
-    }
-
-    public String getCellText(SelenideElement cell) {
-        return cell.getText().trim();
-    }
 }
 

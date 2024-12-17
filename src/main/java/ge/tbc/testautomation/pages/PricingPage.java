@@ -1,11 +1,8 @@
 package ge.tbc.testautomation.pages;
 
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.SelenideElement;
-import ge.tbc.testautomation.data.Constants;
 
 import static com.codeborne.selenide.Selectors.byCssSelector;
-import static com.codeborne.selenide.Selectors.byTagAndText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class PricingPage {
@@ -36,7 +33,7 @@ public class PricingPage {
     public SelenideElement kendoReactCard = $(".Box--pricing3[data-opti-expid='KendoReact']");
     public SelenideElement kendoReactPrice = kendoReactCard.$("span.js-price");
     public SelenideElement reactKendokaImage = kendoReactCard.$(".Box-ninja img[alt='react-kendoka']");
-//--------------------------------------------------------------------------------------------------------//
+
 
 
     public final SelenideElement stickyHeader = $("#js-sticky-head");
