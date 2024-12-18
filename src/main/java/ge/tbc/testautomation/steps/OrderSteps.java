@@ -2,16 +2,18 @@ package ge.tbc.testautomation.steps;
 
 import com.codeborne.selenide.Condition;
 import ge.tbc.testautomation.pages.OrderPage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selenide.open;
+
 import static ge.tbc.testautomation.data.Constants.*;
 
 public class OrderSteps {
-    OrderPage orderPage = new OrderPage();
+    private final OrderPage orderPage = new OrderPage();
 
+    @Step("Navigate to the Order page")
     public OrderSteps navigateToOrderPage() {
         open(DEMOS_URL);
         orderPage.pricingLink.click();
@@ -19,6 +21,7 @@ public class OrderSteps {
         return this;
     }
 
+    @Step("Dismiss the login popup")
     public OrderSteps dismissLoginPopup() {
         orderPage.loginPopup.shouldBe(visible);
         orderPage.closePopup.click();
@@ -26,82 +29,67 @@ public class OrderSteps {
         return this;
     }
 
+    @Step("Validate unit price. Expected: {expectedPrice}")
     public OrderSteps validateUnitPrice(String expectedPrice) {
-        double actualPrice = Double.parseDouble(orderPage.unitPrice.getText()
-                .replaceAll("[^\\d.]", "")); // Keep only digits and decimal points
+        double actualPrice = Double.parseDouble(orderPage.unitPrice.getText().replaceAll("[^\\d.]", ""));
         double expected = Double.parseDouble(expectedPrice);
 
         assert actualPrice == expected : "Expected: " + expected + ", but found: " + actualPrice;
         return this;
     }
 
+    @Step("Validate discounts and prices")
     public OrderSteps validateDiscountsAndPrices() {
-        // Open the popup by interacting with the quantity dropdown
         orderPage.quantityDropdown.click();
         orderPage.discountPopup.shouldBe(Condition.visible);
 
-        // Extract percentage values dynamically
         String discount25Text = orderPage.getDiscountPercentage(orderPage.getDiscountRow(0));
         String discount610Text = orderPage.getDiscountPercentage(orderPage.getDiscountRow(1));
 
-        // Convert percentages to numerical values
         double discount25 = extractPercentage(discount25Text);
         double discount610 = extractPercentage(discount610Text);
 
         System.out.println("2-5 Licenses Discount: " + discount25 + "%");
         System.out.println("6-10 Licenses Discount: " + discount610 + "%");
 
-        // Original price
-        double originalPrice = 1499.0;
-
-        // Calculate expected savings
+        double originalPrice = ORIGINAL_PRICE;
         double calculatedDiscount25 = originalPrice * (discount25 / 100);
         double calculatedDiscount610 = originalPrice * (discount610 / 100);
 
-        // Validate calculated savings dynamically for quantity 2-5
         setQuantityAndValidateSavings("2", calculatedDiscount25);
-
-        // Validate calculated savings dynamically for quantity 6-10
         setQuantityAndValidateSavings("6", calculatedDiscount610);
 
         return this;
     }
 
-    // Helper method to extract numerical percentage from text
     private double extractPercentage(String discountText) {
         return Double.parseDouble(discountText.replaceAll("[^0-9]", ""));
     }
 
-    // Helper method to set quantity and validate savings
     private void setQuantityAndValidateSavings(String quantity, double expectedSavings) {
         orderPage.quantityDropdown.click();
         orderPage.quantityDropdown.sendKeys(quantity);
-        sleep(500); // Slight wait to ensure dropdown registers input
+        sleep(500);
         orderPage.quantityDropdown.sendKeys(Keys.ENTER);
 
-        // Validate the savings
         orderPage.savings.shouldHave(Condition.text(String.format("%.2f", expectedSavings)));
     }
 
+    @Step("Validate subtotal dynamically for quantity: {quantity} and term: {term}")
     public OrderSteps validateSubtotalDynamically(int quantity, int term) {
-        // Extract and clean unit price
         double unitPriceValue = Double.parseDouble(orderPage.unitPrice.getText().replaceAll("[^\\d.]", ""));
 
-        // Select the term
         orderPage.termDropdown.click();
-        orderPage.termDropdown.sendKeys(String.valueOf(term-1));
+        orderPage.termDropdown.sendKeys(String.valueOf(term - 1));
         orderPage.termDropdown.pressEnter();
 
-        // Select the quantity
         orderPage.quantityDropdown.click();
         orderPage.quantityDropdown.sendKeys(String.valueOf(quantity));
         orderPage.quantityDropdown.pressEnter();
 
-        // Calculate expected subtotal
         double expectedSubtotal = unitPriceValue * quantity * term;
-
-        // Extract actual subtotal and clean it
         double actualSubtotal = Double.parseDouble(orderPage.subtotal.getText().replaceAll("[^\\d.]", ""));
+
         assert Math.abs(actualSubtotal - expectedSubtotal) < 0.01
                 : String.format("Subtotal mismatch! Expected: %.2f, but Found: %.2f", expectedSubtotal, actualSubtotal);
 
@@ -109,19 +97,12 @@ public class OrderSteps {
         return this;
     }
 
-
-
+    @Step("Validate total discounts")
     public OrderSteps validateTotalDiscounts() {
-        // Step 1: Extract the savings per unit
         double savingsPerUnit = extractPrice(orderPage.savings.getText());
-
-        // Step 2: Get the currently selected quantity
         int quantity = Integer.parseInt(orderPage.selectedQuantity.getText().trim());
-
-        // Step 3: Calculate the expected total discount
         double expectedTotalDiscount = savingsPerUnit * quantity;
 
-        // Step 4: Hover over the tooltip and get the displayed discount
         orderPage.totalDiscountsLabel.hover();
         orderPage.tooltip.shouldBe(visible);
 
@@ -134,11 +115,11 @@ public class OrderSteps {
         return this;
     }
 
-    // Helper method to extract price values (e.g., Save $149.90 -> 149.90)
     private double extractPrice(String priceText) {
         return Double.parseDouble(priceText.replaceAll("[^\\d.]", ""));
     }
 
+    @Step("Validate total value matches subtotal")
     public OrderSteps validateTotalValue() {
         double subtotal = extractPrice(orderPage.subtotal.getText());
         double total = extractPrice(orderPage.totalPrice.getText());
@@ -148,38 +129,37 @@ public class OrderSteps {
         return this;
     }
 
+    @Step("Fill the order form and validate navigation")
     public OrderSteps fillFormAndValidateNavigation() {
         orderPage.continueAsGuestButton.scrollIntoCenter().click();
 
-        orderPage.firstNameInput.setValue("John");
-        orderPage.lastNameInput.setValue("Doe");
-        orderPage.emailInput.setValue("john.doe@example.com");
-        orderPage.companyInput.setValue("Example Corp");
-        orderPage.phoneInput.setValue("+1234567890");
-        orderPage.addressInput.setValue("123 Main Street");
-        orderPage.cityInput.setValue("New York");
-        orderPage.zipCodeInput.setValue("10001");
+        orderPage.firstNameInput.setValue(FIRST_NAME);
+        orderPage.lastNameInput.setValue(LAST_NAME);
+        orderPage.emailInput.setValue(EMAIL);
+        orderPage.companyInput.setValue(COMPANY);
+        orderPage.phoneInput.setValue(PHONE);
+        orderPage.addressInput.setValue(ADDRESS);
+        orderPage.cityInput.setValue(CITY);
+        orderPage.zipCodeInput.setValue(ZIP_CODE);
 
-        orderPage.countryComboBox.$(".k-input-button").click(); // Open the dropdown
+        orderPage.countryComboBox.$(".k-input-button").click();
         orderPage.countryDropdownList.shouldBe(visible)
                 .findAll("li")
-                .findBy(text("Afghanistan"))
+                .findBy(text(COUNTRY))
                 .click();
-        // Click "Continue" button
+
         orderPage.continueButton.scrollIntoCenter().click();
 
-        // Navigate back and verify inputs
         orderPage.backButton.scrollIntoCenter().click();
-        orderPage.firstNameInput.shouldHave(value("John"));
-        orderPage.lastNameInput.shouldHave(value("Doe"));
-        orderPage.emailInput.shouldHave(value("john.doe@example.com"));
-        orderPage.companyInput.shouldHave(value("Example Corp"));
-        orderPage.phoneInput.shouldHave(value("+1234567890"));
-        orderPage.addressInput.shouldHave(value("123 Main Street"));
-        orderPage.cityInput.shouldHave(value("New York"));
-        orderPage.zipCodeInput.shouldHave(value("10001"));
+        orderPage.firstNameInput.shouldHave(value(FIRST_NAME));
+        orderPage.lastNameInput.shouldHave(value(LAST_NAME));
+        orderPage.emailInput.shouldHave(value(EMAIL));
+        orderPage.companyInput.shouldHave(value(COMPANY));
+        orderPage.phoneInput.shouldHave(value(PHONE));
+        orderPage.addressInput.shouldHave(value(ADDRESS));
+        orderPage.cityInput.shouldHave(value(CITY));
+        orderPage.zipCodeInput.shouldHave(value(ZIP_CODE));
 
         return this;
     }
-
 }

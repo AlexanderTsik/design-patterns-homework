@@ -1,0 +1,22 @@
+{
+  "categories": [
+    {
+      "name": "Critical Failures",
+      "matchedStatuses": ["failed"],
+      "messageRegex": ".*Critical.*"
+    },
+    {
+      "name": "Authentication Errors",
+      "matchedStatuses": ["broken", "failed"],
+      "messageRegex": ".*Authentication.*"
+    },
+    {
+      "name": "Test Defects",
+      "matchedStatuses": ["broken"]
+    },
+    {
+      "name": "Connection Problems",
+      "traceRegex": ".*(ConnectionException|SocketTimeoutException).*"
+    }
+  ]
+}

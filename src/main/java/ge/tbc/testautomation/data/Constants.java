@@ -82,4 +82,14 @@ public class Constants {
 
 
     public static final String PRICE_NUM = "1499";
+
+    public static final double ORIGINAL_PRICE = 1499.0;
+    public static final String FIRST_NAME = "John";
+    public static final String LAST_NAME = "Doe";
+    public static final String COMPANY = "Example Corp";
+    public static final String PHONE = "+1234567890";
+    public static final String ADDRESS = "123 Main Street";
+    public static final String CITY = "New York";
+    public static final String ZIP_CODE = "10001";
+    public static final String COUNTRY = "Afghanistan";
 }
