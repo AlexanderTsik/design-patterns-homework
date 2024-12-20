@@ -1,16 +1,18 @@
 package ge.tbc.testautomation.tests;
 
-import ge.tbc.testautomation.pages.CheckBoxPage;
-import ge.tbc.testautomation.pages.DropDownPage;
+
 import ge.tbc.testautomation.pages.PricingPage;
 import ge.tbc.testautomation.steps.CheckBoxSteps;
 import ge.tbc.testautomation.steps.DropDownSteps;
 import ge.tbc.testautomation.steps.TextBoxSteps;
 import org.testng.annotations.Test;
 import ge.tbc.testautomation.steps.PricingSteps;
+import io.qameta.allure.*;
 
 import static ge.tbc.testautomation.data.Constants.*;
 
+@Epic("Pricing Validation")
+@Feature("UI Element Validation")
 public class SelenideTests1 extends BaseTest {
     private final PricingSteps pricingSteps = new PricingSteps();
     private final PricingPage pricingPage = new PricingPage();
@@ -18,7 +20,10 @@ public class SelenideTests1 extends BaseTest {
     private final DropDownSteps dropDownSteps = new DropDownSteps();
     private final TextBoxSteps textBoxSteps = new TextBoxSteps();
 
-    @Test(groups="Selenide 1")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Validate the availability and limitations of pricing bundles")
+    @Description("This test verifies the features included or excluded in different pricing bundles.")
+    @Test(groups = "Selenide 1")
     public void validateBundleOffers() {
         pricingSteps.openPricingPage()
 
@@ -52,13 +57,19 @@ public class SelenideTests1 extends BaseTest {
                 .validateFeatureIncluded(ON_DEMAND_VIDEOS, DEVCRAFT_ULTIMATE_COLUMN);
     }
 
-    @Test (groups="Selenide 1")
+    @Severity(SeverityLevel.MINOR)
+    @Story("Verify sticky header functionality")
+    @Description("This test checks if the sticky header on the pricing page remains visible when scrolling.")
+    @Test(groups = "Selenide 1")
     public void validateSticky() {
         pricingSteps.openPricingPage()
                 .validateStickyHeader();
     }
 
-    @Test(groups="Selenide 1")
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Validate individual pricing offers and UI elements")
+    @Description("This test verifies the functionality of individual pricing offers, including dropdown options and pricing.")
+    @Test(groups = "Selenide 1")
     public void validateIndividualOffers() {
         pricingSteps.openIndividualPricing()
                 //1) A Kendo Ninja image appears once you hover over any of the two offers.
@@ -71,19 +82,28 @@ public class SelenideTests1 extends BaseTest {
                 .validatePricing(pricingPage.kendoUIPrice,KENDO_UI_PRICE);
     }
 
-    @Test(groups = {"dropDown-FrontEnd"})
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Validate checkbox functionality")
+    @Description("This test verifies the checkbox functionality on the checkboxes page.")
+    @Test(groups = {"checkBox-FrontEnd"})
     public void checkBoxTest() {
         checkBoxSteps.openCheckBoxPage()
                 .validateCheckboxes();
     }
 
+    @Severity(SeverityLevel.NORMAL)
+    @Story("Validate dropdown functionality")
+    @Description("This test checks if dropdown options can be selected and validated correctly.")
     @Test(groups = {"dropDown-FrontEnd"})
     public void dropDownTest() {
         dropDownSteps.openDropDownPage()
                 .validateDropdownSelection(DROPDOWN_OPTION);
     }
 
-    @Test(groups="Selenide 1")
+    @Severity(SeverityLevel.CRITICAL)
+    @Story("Validate form submission and output display")
+    @Description("This test verifies if the form on the text box page is submitted correctly and displays the expected output.")
+    @Test(groups = "Selenide 1")
     public void collectionsTest() {
         textBoxSteps.fillAndSubmitForm(
                 FULL_NAME,          // Full Name

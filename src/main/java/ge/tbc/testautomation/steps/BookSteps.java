@@ -8,15 +8,18 @@ import org.testng.asserts.SoftAssert;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.open;
 import static ge.tbc.testautomation.data.Constants.*;
+import io.qameta.allure.*;
 
 public class BookSteps {
     private final BookPage bookPage = new BookPage();
 
+    @Step("Open books page")
     public BookSteps openBooksPage() {
         open(DEMOQA_BOOKS_URL);
         return this;
     }
 
+    @Step("Validate books by publisher: {publisher} and title: {title}")
     public BookSteps validateBooksByPublisherAndTitle(String publisher, String title) {
         var filteredBooks = bookPage.books.filterBy(text(publisher)).filterBy(text(title));
 
@@ -37,14 +40,14 @@ public class BookSteps {
         }
         return this; // Enables method chaining
     }
-
+    @Step("Find books by publisher: {publisher} and title keyword: {titleKeyword}")
     public ElementsCollection findBooksByPublisherAndTitle(String publisher, String titleKeyword) {
         return bookPage.books
                 .filterBy(Condition.text(publisher))
                 .filterBy(Condition.text(titleKeyword));
     }
 
-
+    @Step("Validate books with soft assertions for publisher: {publisher}, title keyword: {titleKeyword}, expected size: {expectedSize}, and expected first book title: {expectedFirstBookTitle}")
     public void validateBooksWithSoftAssertions(String publisher, String titleKeyword, int expectedSize, String expectedFirstBookTitle) {
         SoftAssert softAssert = new SoftAssert();
 

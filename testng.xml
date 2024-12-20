@@ -1,6 +1,10 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Homework Test Suite" verbose="1">
-
+<suite name="Allure Configuration Suite" verbose="1">
+    <listeners>
+        <listener class-name="ge.tbc.testautomation.listeners.CustomSuiteListener" />
+        <listener class-name="ge.tbc.testautomation.listeners.CustomTestListener" />
+        <listener class-name="ge.tbc.testautomation.listeners.CustomReportListener" />
+    </listeners>
     <!-- First Test Tag -->
     <test name="Selenide Tests">
         <!-- Define Grouping -->
@@ -34,12 +38,7 @@
         </groups>
 
         <!-- Execution Sequence -->
-        <methods>
-            <class name="ge.tbc.testautomation.tests.SelenideTests1">
-                <include name="dropDownTest"/>
-                <include name="checkBoxTest"/>
-            </class>
-        </methods>
+
 
         <classes>
             <class name="ge.tbc.testautomation.tests.SelenideTests1"/>

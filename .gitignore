@@ -2,3 +2,9 @@ target
 .idea
 *.iml
 build
+# Ignore everything in allure-results
+allure-results/*
+
+# Allow categories.json and environment.properties
+!allure-results/categories.json
+!allure-results/environment.properties
